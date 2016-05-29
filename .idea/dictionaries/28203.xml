@@ -3,6 +3,8 @@
     <words>
       <w>devtool</w>
       <w>hmre</w>
+      <w>preprocess</w>
+      <w>sourcemap</w>
     </words>
   </dictionary>
 </component>
