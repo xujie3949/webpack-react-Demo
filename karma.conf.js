@@ -1,32 +1,29 @@
 var path = require('path');
 
-var Paths = {
-    rootPath: path.resolve(__dirname),
-    appPath: path.resolve(__dirname, 'app'),
-    buildPath: path.resolve(__dirname, 'build'),
-    appEntry: path.resolve(__dirname, 'test.webpack.js')
+var PATHS = {
+    rootPath: path.resolve(__dirname)
 };
 
 module.exports = function (config) {
     config.set({
-        browsers: ['Chrome'], //run in Chrome
-        singleRun: true, //just run once by default
-        frameworks: ['jasmine'], //use the jasmine test framework
+        browsers: ['Chrome'],
+        singleRun: true,
+        frameworks: ['jasmine'],
         files: [
-            'test.webpack.js' //just load this file
+            'test/*.jsx'
         ],
         preprocessors: {
-            'test.webpack.js': ['webpack'] //preprocess with webpack and our sourcemap loader
+            'test/*.jsx': ['webpack']
         },
-        reporters: ['progress', 'coverage'], //report results in this format
-        webpack: { //kind of a copy of your webpack config
-            devtool: 'inline-source-map', //just do inline source maps instead of the default
+        reporters: ['progress', 'coverage'],
+        webpack: {
+            devtool: 'inline-source-map',
             module: {
                 loaders: [
                     {
                         test: /\.jsx?$/,
                         loaders: ['babel'],
-                        include: Paths.rootPath
+                        include: PATHS.rootPath
                     },
                     {
                         test: /\.scss$/,
@@ -38,16 +35,16 @@ module.exports = function (config) {
                 extensions: ['', '.js', '.jsx']
             }
         },
-        //webpackServer: {
-        //    noInfo: true //please don't spam the console when running in karma!
-        //},
-        //plugins: [
-        //    require("karma-jasmine"),
-        //    require("karma-webpack"),
-        //    require("karma-chrome-launcher"),
-        //    require("karma-coverage"),
-        //    require("karma-sourcemap-loader"),
-        //]
+        webpackServer: {
+            noInfo: true //please don't spam the console when running in karma!
+        },
+        plugins: [
+            require("karma-jasmine"),
+            require("karma-webpack"),
+            require("karma-chrome-launcher"),
+            require("karma-coverage"),
+            require("karma-sourcemap-loader"),
+        ]
     });
 };
 

@@ -1,7 +1,9 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var Paths = {
+process.env.BABEL_ENV = process.env.npm_lifecycle_event;
+
+var PATHS = {
     rootPath: path.resolve(__dirname),
     appPath: path.resolve(__dirname, 'app'),
     buildPath: path.resolve(__dirname, 'build'),
@@ -10,10 +12,10 @@ var Paths = {
 
 module.exports = {
     entry: {
-        app: Paths.appEntry
+        app: PATHS.appEntry
     },
     output: {
-        path: Paths.buildPath,
+        path: PATHS.buildPath,
         filename: '[name].[hash].js'
     },
     //enable dev source map
@@ -33,7 +35,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 loaders: ['babel'],
-                include: Paths.appPath
+                include: PATHS.appPath
             },
             {
                 test: /\.scss$/,
