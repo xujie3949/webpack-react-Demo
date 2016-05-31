@@ -1,7 +1,8 @@
 var path = require('path');
 
 var PATHS = {
-    rootPath: path.resolve(__dirname)
+    rootPath: path.resolve(__dirname),
+    appPath: path.resolve(__dirname, 'app/components')
 };
 
 module.exports = function (config) {
@@ -10,45 +11,48 @@ module.exports = function (config) {
         singleRun: true,
         frameworks: ['jasmine'],
         files: [
-            'test/*.jsx'
+            'test.webpack.js'
         ],
         preprocessors: {
-            'test/*.jsx': ['webpack']
+            'test.webpack.js': ['webpack'],
+            'app/components/*.jsx': ['coverage']
         },
-        reporters: ['progress', 'coverage'],
+        reporters: ['progress'],
+        coverageReporter: {
+            reporters: [
+                {type: 'html', subdir: 'html'},
+                {type: 'lcovonly', subdir: '.'}
+            ]
+        },
         webpack: {
             devtool: 'inline-source-map',
             module: {
+                preLoader: [
+                    {
+                        test: /\.jsx?$/,
+                        loader: 'babel',
+                        exclude: /(bower_components|node_modules)/,
+                        include: PATHS.appPath
+                    },
+                    {
+                        test: /\.jsx?$/,
+                        loader: 'babel-istanbul',
+                        exclude: /(bower_components|node_modules)/,
+                        include: PATHS.appPath
+                    }
+                ],
                 loaders: [
                     {
                         test: /\.jsx?$/,
                         loaders: ['babel'],
                         include: PATHS.rootPath
-                    },
-                    {
-                        test: /\.scss$/,
-                        loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
-                    },
-                    {
-                        test: /\.(png|jpg)$/,
-                        loader: 'url?limit=25000'
                     }
                 ]
             },
             resolve: {
                 extensions: ['', '.js', '.jsx']
             }
-        },
-        webpackServer: {
-            noInfo: true
-        },
-        plugins: [
-            require("karma-jasmine"),
-            require("karma-webpack"),
-            require("karma-chrome-launcher"),
-            require("karma-coverage"),
-            require("karma-sourcemap-loader")
-        ]
+        }
     });
 };
 
