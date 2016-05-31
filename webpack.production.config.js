@@ -34,7 +34,7 @@ var config = {
             },
             {
                 test: /\.scss$/,
-                loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
+                loaders: ['style', 'css', 'sass']
             },
             {
                 test: /\.(png|jpg)$/,
