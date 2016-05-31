@@ -14,17 +14,6 @@ var PATHS = {
     appEntry: path.resolve(__dirname, 'app/index.jsx')
 };
 
-var deps = [
-    {
-        name: 'react',
-        path: 'react/dist/react.min.js'
-    },
-    {
-        name: 'react-dom',
-        path: 'react-dom/dist/react-dom.min.js'
-    }
-];
-
 var config = {
     entry: {
         app: PATHS.appEntry
@@ -34,11 +23,9 @@ var config = {
         filename: '[name].[hash].js'
     },
     resolve: {
-        alias: {},
         extensions: ['', '.js', '.jsx']
     },
     module: {
-        noParse: [],
         loaders: [
             {
                 test: /\.jsx?$/,
@@ -65,14 +52,13 @@ var config = {
             compress: {
                 warnings: false
             }
+        }),
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify("production")
+            }
         })
     ]
 };
-
-deps.forEach(function (dep) {
-    var depPath = path.resolve(PATHS.nodeModulesPath, dep.path);
-    config.resolve.alias[dep.name] = depPath;
-    config.module.noParse.push(depPath);
-});
 
 module.exports = config;
