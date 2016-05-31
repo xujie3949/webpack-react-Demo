@@ -28,6 +28,10 @@ module.exports = function (config) {
                     {
                         test: /\.scss$/,
                         loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
+                    },
+                    {
+                        test: /\.(png|jpg)$/,
+                        loader: 'url?limit=25000'
                     }
                 ]
             },
@@ -36,14 +40,14 @@ module.exports = function (config) {
             }
         },
         webpackServer: {
-            noInfo: true //please don't spam the console when running in karma!
+            noInfo: true
         },
         plugins: [
             require("karma-jasmine"),
             require("karma-webpack"),
             require("karma-chrome-launcher"),
             require("karma-coverage"),
-            require("karma-sourcemap-loader"),
+            require("karma-sourcemap-loader")
         ]
     });
 };
