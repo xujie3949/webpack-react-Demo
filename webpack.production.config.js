@@ -48,6 +48,7 @@ var config = {
             title: 'My first react app',
             filename: 'index.html'
         }),
+        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false

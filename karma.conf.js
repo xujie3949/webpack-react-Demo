@@ -2,7 +2,8 @@ var path = require('path');
 
 var PATHS = {
     rootPath: path.resolve(__dirname),
-    appPath: path.resolve(__dirname, 'app/components')
+    appPath: path.resolve(__dirname, 'app'),
+    testPath: path.resolve(__dirname, 'test')
 };
 
 module.exports = function (config) {
@@ -14,38 +15,24 @@ module.exports = function (config) {
             'test.webpack.js'
         ],
         preprocessors: {
-            'test.webpack.js': ['webpack'],
-            'app/components/*.jsx': ['coverage']
-        },
-        reporters: ['progress'],
-        coverageReporter: {
-            reporters: [
-                {type: 'html', subdir: 'html'},
-                {type: 'lcovonly', subdir: '.'}
-            ]
+            'test.webpack.js': ['webpack', 'sourcemap']
         },
         webpack: {
             devtool: 'inline-source-map',
             module: {
-                preLoader: [
-                    {
-                        test: /\.jsx?$/,
-                        loader: 'babel',
-                        exclude: /(bower_components|node_modules)/,
-                        include: PATHS.appPath
-                    },
-                    {
-                        test: /\.jsx?$/,
-                        loader: 'babel-istanbul',
-                        exclude: /(bower_components|node_modules)/,
-                        include: PATHS.appPath
-                    }
-                ],
                 loaders: [
                     {
                         test: /\.jsx?$/,
-                        loaders: ['babel'],
-                        include: PATHS.rootPath
+                        loader: 'babel',
+                        include: [PATHS.appPath, PATHS.testPath]
+                    },
+                    {
+                        test: /\.scss$/,
+                        loaders: ['style', 'css', 'sass']
+                    },
+                    {
+                        test: /\.(png|jpg)$/,
+                        loader: 'url?limit=25000'
                     }
                 ]
             },
